@@ -301,7 +301,6 @@ ECOTree = function (obj, elm) {
 		defaultTarget : 'javascript:void(0);',
 		expandedImage : './img/less.gif',
 		collapsedImage : './img/plus.gif',
-		transImage : './img/trans.gif'
 	}
 	
 	this.version = "1.1";
@@ -705,53 +704,62 @@ ECOTree.prototype._drawTree = function () {
 					this.ctx.restore();
 					
 					//HTML part...
-					s.push('<div id="' + node.id + '" class="econode" style="{top:'+(node.YPosition+this.canvasoffsetTop)+'; left:'+(node.XPosition+this.canvasoffsetLeft)+'; width:'+node.w+'; height:'+node.h+';}" ');
+					s.push('<div id="' + node.id + '" class="econode" style="{top:'+(node.YPosition+this.canvasoffsetTop)+'px; left:'+(node.XPosition+this.canvasoffsetLeft)+'px; width:'+node.w+'px; height:'+node.h+'px;}" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)											
 						s.push('onclick="javascript:ECOTree._canvasNodeClickHandler('+this.obj+',event.target.id,\''+node.id+'\');" ');										
+					s.push('onmouseover="javascript:showInfo(\''+node.id+'\',event)" ');
+					s.push('onmouseout="javascript:hideInfo()" ');
 					s.push('>');
-					s.push('<font face=Verdana size=1>');					
+					s.push('<font face=Verdana size=3>');					
 					if (node.canCollapse) {
-						s.push('<a id="c' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\', true);" >');
+						s.push('<a id="c' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
 						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');							
 						s.push('</a>');
-						s.push('<img src="'+this.config.transImage+'" >');						
 					}					
 					if (node.target && this.config.useTarget)
 					{
-						s.push('<a id="t' + node.id + '" href="'+node.target+'">');
+						//s.push('<a id="t' + node.id + '" href="'+node.target+'">');
+						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
 						s.push(node.dsc);
 						s.push('</a>');
 					}				
 					else
-					{						
+					{
+						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
 						s.push(node.dsc);
+						s.push('</a>');
 					}
 					s.push('</font>');
 					s.push('</div>');		
 					break;
 					
 				case "VML":
-					s.push('<v:roundrect id="' + node.id + '" strokecolor="'+border+'" arcsize="0.18"	');
-					s.push('style="position:absolute; top:'+node.YPosition+'; left:'+node.XPosition+'; width:'+node.w+'; height:'+node.h+'" ');
+					s.push('<v:roundrect id="' + node.id + '" strokecolor="'+border+'" arcsize="0.18"');
+					s.push('style="position:absolute; top:'+node.YPosition+'px; left:'+node.XPosition+'px; width:'+node.w+'px; height:'+node.h+'px" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)
 						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');										
 					s.push('>');
-					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ><font face=Verdana size=1>');
+					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ');
+					s.push('onmouseover="javascript:showInfo(\''+node.id+'\',event)" ');
+					s.push('onmouseout="javascript:hideInfo()"><font face=Verdana size=3>');
 					if (node.canCollapse) {
-						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\', true);" >');
+						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
 						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');							
 						s.push('</a>');
-						s.push('<img src="'+this.config.transImage+'" >');						
 					}					
 					if (node.target && this.config.useTarget)
 					{
-						s.push('<a href="'+node.target+'">');
-						s.push(node.dsc);			
+						//s.push('<a href="'+node.target+'">');
+						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+						s.push(node.dsc);
 						s.push('</a>');	
 					}				
 					else
 					{						
-						s.push(node.dsc);									
+						//s.push(node.dsc);									
+						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+						s.push(node.dsc);			
+						s.push('</a>');	
 					}
 					s.push('</font></v:textbox>');											
 					switch (this.config.nodeFill) {

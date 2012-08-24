@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html>
   <head>
     <meta charset='utf-8'>
@@ -7,36 +7,60 @@
     <link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="../../stylesheets/pygment_trac.css" media="screen" />
     <script type="text/javascript" src="./ECOTree.js"></script>
+    <script type="text/javascript" src="./data.js"></script>
     <link rel="stylesheets" type="text/css" href="./ECOTree.css" />
 
+    <title>家谱图</title>
     <xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
     <style>v\:*{ behavior:url(#default#VML);}</style> 
-    <style>
-    .copy {
-	    font-family : "Verdana";
-	    font-size : 15px;
-color : #CCCCCC;
-    }
-</style>
     <script>
 	var myTree = null;
-	function create_tree() {
+	var myDesc = [];
+	function createTree() {
 		myTree = new ECOTree('myTree', 'myContainer');
-		myTree.add(0, -1, "Shit");
-		myTree.add(1, 0, "Left Shit");
-		myTree.add(2, 0, "Right Shit");
+		//myTree.config.linkColor = "white";
+		//myTree.config.nodeColor = "#00007f";
+		//myTree.config.nodeBorderColor = "green";
+		myTree.config.useTarget = false;
+		parseChilds(g_tree_data.childs, 0, -1);
+		//myTree.add(0, -1, "Shit");
+		//myTree.add(1, 0, "Left Shit");
+		//myTree.add(2, 0, "Right Shit");
 		myTree.UpdateTree();
 	}
+	function parseChilds(childs, curr_id, parent_id) {
+		for (var i=0; i<childs.length; i++) {
+			var aTmp = childs[i];
+			myTree.add(curr_id, parent_id, aTmp.name);
+			myDesc.push(aTmp.desc);
+			curr_id++;
+			if (typeof(aTmp.childs) !== "undefined")
+				curr_id = parseChilds(aTmp.childs, curr_id, curr_id - 1);
+		}
+		return curr_id;
+	}
+	function showInfo(node_id, evt) {
+		//alert(node_id + event);
+		var tip = document.getElementById('myTip');
+		tip.style.display = "block";
+		tip.style.position = "absolute";
+		tip.style.top = evt.pageX + "px";
+		tip.style.left = evt.pageY + "px";
+		tip.innerHTML = myDesc[node_id];
+	}
+	function hideInfo() {
+		document.getElementById('myTip').style.display = 'none';
+	}
     </script>
-    <title>家谱图</title>
   </head>
 
-  <body onload="create_tree();">
+  <body onload="createTree();">
 
    <div style="width:1000px; margin:0 auto;">
     <br><h1 style="margin:0 0 0 50px;">家谱图</h1>
     <br>
     <div id="myContainer"></div>
+    <div id="myTip" class="tooltip" style="display:none; background-color:#004f00"></div>
    </div>
   </body>
 </html>
