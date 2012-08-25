@@ -296,7 +296,8 @@ ECOTree = function (obj, elm) {
 		colorStyle : ECOTree.CS_NODE,
 		useTarget : true,
 		searchMode : ECOTree.SM_DSC,
-		selectMode : ECOTree.SL_MULTIPLE,
+		//selectMode : ECOTree.SL_MULTIPLE,
+		selectMode : ECOTree.SL_NONE,
 		defaultNodeWidth : 125,
 		defaultNodeHeight : 72,
 		defaultTarget : 'javascript:void(0);',
@@ -750,40 +751,39 @@ ECOTree.prototype._drawTree = function () {
 					s.push('style="position:absolute; top:'+node.YPosition+'px; left:'+node.XPosition+'px; width:'+node.w+'px; height:'+node.h+'px" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)
 						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');										
-					s.push('>');
-					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ');
 					s.push('onmouseover="javascript:showInfo('+node.id+','+node.XPosition+','+(node.YPosition+node.h)+')" ');
-					s.push('onmouseout="javascript:hideInfo()"><font face=Verdana size=3>');
+					s.push('onmouseout="javascript:hideInfo()" >');
+					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ><font face=Verdana size=3>');
 					if (node.canCollapse) {
 						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
-						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');							
+						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');
 						s.push('</a>');
-					}					
+						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+					} else {
+s.push('<a ');
+}
 					if (node.target && this.config.useTarget)
 					{
 						//s.push('<a href="'+node.target+'">');
-						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
-						s.push(node.dsc);
-						s.push('</a>');	
 					}				
 					else
-					{						
-						//s.push(node.dsc);									
-						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
-						s.push(node.dsc);			
-						s.push('</a>');	
+					{
+						//s.push(node.dsc);
 					}
-					s.push('</font></v:textbox>');											
+s.push(' style="text-align:center; color:black; font-weight:bold" >');
+						s.push(node.dsc);
+						s.push('</a>');	
+					s.push('</font></v:textbox>');
 					switch (this.config.nodeFill) {
 						case ECOTree.NF_GRADIENT:
-							s.push('<v:fill type=gradient color2="'+((node.isSelected)?this.config.nodeSelColor:color)+'" color="#F5FFF5" angle=90 />');	
+							s.push('<v:fill type=gradient color2="'+((node.isSelected)?this.config.nodeSelColor:color)+'" color="#F5FFF5" angle=90 />');
 							break;
 						case ECOTree.NF_FLAT:
 							s.push('<v:fill type="solid" color="'+((node.isSelected)?this.config.nodeSelColor:color)+'" />');	
 							break;
 					}
-					s.push('<v:shadow type="single" on="true" opacity="0.7" />');					
-					s.push('</v:roundrect>');																									
+					s.push('<v:shadow type="single" on="true" opacity="0.7" />');
+					s.push('</v:roundrect>');
 					break;
 			}	
 			if (!node.isCollapsed)	s.push(node._drawChildrenLinks(this.self));
