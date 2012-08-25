@@ -39,14 +39,16 @@
 		}
 		return curr_id;
 	}
-	function showInfo(node_id, evt) {
+	function showInfo(node_id, x, y) {
 		//alert(node_id + event);
+		var data = myDesc[node_id];
+		if (data == "") return;
 		var tip = document.getElementById('myTip');
 		tip.style.display = "block";
 		tip.style.position = "absolute";
-		tip.style.top = evt.pageX + "px";
-		tip.style.left = evt.pageY + "px";
-		tip.innerHTML = myDesc[node_id];
+		tip.style.top = (y+10) + "px";
+		tip.style.left = x + "px";
+		tip.innerHTML = data;
 	}
 	function hideInfo() {
 		document.getElementById('myTip').style.display = 'none';
@@ -58,9 +60,8 @@
 
    <div style="width:1000px; margin:0 auto;">
     <br><h1 style="margin:0 0 0 50px;">家谱图</h1>
-    <br>
     <div id="myContainer"></div>
-    <div id="myTip" class="tooltip" style="display:none; background-color:#004f00"></div>
+    <div id="myTip" class="tooltip" style="display:none; background-color:#004f00; font-weight:bold"></div>
    </div>
   </body>
 </html>

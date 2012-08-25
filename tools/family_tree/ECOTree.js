@@ -297,11 +297,11 @@ ECOTree = function (obj, elm) {
 		useTarget : true,
 		searchMode : ECOTree.SM_DSC,
 		selectMode : ECOTree.SL_MULTIPLE,
-		defaultNodeWidth : 85,
-		defaultNodeHeight : 60,
+		defaultNodeWidth : 125,
+		defaultNodeHeight : 72,
 		defaultTarget : 'javascript:void(0);',
 		expandedImage : './img/less.gif',
-		collapsedImage : './img/plus.gif',
+		collapsedImage : './img/plus.gif'
 	}
 	
 	this.version = "1.1";
@@ -714,36 +714,33 @@ ECOTree.prototype._drawTree = function () {
 					s.push('style="{top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+node.w+'px; height:'+node.h+'px;}" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)											
 						s.push('onclick="javascript:ECOTree._canvasNodeClickHandler('+this.obj+',event.target.id,\''+node.id+'\');" ');										
-					s.push('onmouseover="javascript:showInfo(\''+node.id+'\',event)" ');
+					s.push('onmouseover="javascript:showInfo('+node.id+','+tmpLeft+','+(tmpTop+node.h)+')" ');
 					s.push('onmouseout="javascript:hideInfo()" >');
 					s.push('<font face=Verdana size=3>');
-					var expandedImgLeft = -20;
-					var expandedImgTop = node.h / 2 - 6;
-					var nodeTextLeft = 5;
-					var tmpWidth = node.w - nodeTextLeft * 2;
-					tmpLeft += nodeTextLeft;
+					//var nodeTextLeft = 4;
+					var tmpWidth = node.w;
+					//tmpLeft += nodeTextLeft;
 					if (node.canCollapse) {
 						s.push('<a id="c'+node.id+'" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
 						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
 						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" ');
-						s.push('style="position:relative; left:'+expandedImgLeft+'px; top:'+expandedImgTop+'px" >');
+						s.push('style="position:relative; left:-15px; top:'+(node.h/2-7)+'px" >');
 						s.push('</a>');
-					}					
+						s.push('<a id="t'+node.id+'" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
+					} else {
+						s.push('<a ');
+					}
 					if (node.target && this.config.useTarget)
 					{
 						//s.push('<a id="t' + node.id + '" href="'+node.target+'">');
-						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
-						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
-						s.push(node.dsc);
-						s.push('</a>');
 					}				
 					else
 					{
-						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
-						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
-						s.push(node.dsc);
-						s.push('</a>');
 					}
+					s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px; ');
+					s.push('font-weight:bold; color:black; text-align:center" >');
+					s.push(node.dsc);
+					s.push('</a>');
 					s.push('</font>');
 					s.push('</div>');		
 					break;
@@ -755,7 +752,7 @@ ECOTree.prototype._drawTree = function () {
 						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');										
 					s.push('>');
 					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ');
-					s.push('onmouseover="javascript:showInfo(\''+node.id+'\',event)" ');
+					s.push('onmouseover="javascript:showInfo('+node.id+','+node.XPosition+','+(node.YPosition+node.h)+')" ');
 					s.push('onmouseout="javascript:hideInfo()"><font face=Verdana size=3>');
 					if (node.canCollapse) {
 						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
