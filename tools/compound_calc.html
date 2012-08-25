@@ -18,7 +18,7 @@
     <label>&nbsp;&nbsp;&nbsp;年数：</label><input type="number" id="years" value="3" style="width:50px; font-size:15px;" />
     <br><br><input type="button" value="计算" style="width:80px; font-size:20px; background-color:#993300; color:white" onClick="calc()"/>
 	<br><br>
-<table border="1" id="res" cellspacing='0' cellpadding='0' bordercolor="#00af00"></table>
+    <div id="res"></div>
 <script language="javascript">
 function _keydown() {
 	if (event.keyCode == 13) {
@@ -32,7 +32,7 @@ function calc()
 	var years = document.getElementById('years').value;
 	if (years > 200) years = 200;
 	if (years < 1) years = 1;
-	var data = "";
+	var data = "<table border='1' cellspacing='0' cellpadding='0' bordercolor='#00af00'>";
 	data += "<tr class='header'>" +  
 		"<td align='center' width='10%' rowspan='2'>期次</td>" +  
 		"<td  colspan='3'  align='center'>各期金额</td>" +  
@@ -41,7 +41,7 @@ function calc()
 		"<td align='center' width='30%'>利息</td>" +  
 		"<td align='center' width='35%'>合计</td>" +  
 		"</tr>";
-	var res_data = "";
+	var res_data = "</table>";
 	for (var i=1; i<=years; i++) {
 		var line_data = "<tr height='22'><td align='center'>" + i + "</td>";
 		line_data += "<td align='center'>" + capital + "</td>";
@@ -53,7 +53,7 @@ function calc()
 		res_data = line_data;
 	}
 	data += res_data;
-document.getElementById("res").innerHTML = data;
+	document.getElementById("res").innerHTML = data;
 }
 </script>
     </div>

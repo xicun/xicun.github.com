@@ -285,7 +285,8 @@ ECOTree = function (obj, elm) {
 		topYAdjustment : 0,		
 		render : "AUTO",
 		linkType : "M",
-		linkColor : "blue",
+		//linkColor : "blue",
+		linkColor : "red",
 		nodeColor : "#CCCCFF",
 		nodeFill : ECOTree.NF_GRADIENT,
 		nodeBorderColor : "blue",
@@ -296,8 +297,8 @@ ECOTree = function (obj, elm) {
 		useTarget : true,
 		searchMode : ECOTree.SM_DSC,
 		selectMode : ECOTree.SL_MULTIPLE,
-		defaultNodeWidth : 80,
-		defaultNodeHeight : 40,
+		defaultNodeWidth : 85,
+		defaultNodeHeight : 60,
 		defaultTarget : 'javascript:void(0);',
 		expandedImage : './img/less.gif',
 		collapsedImage : './img/plus.gif',
@@ -363,8 +364,11 @@ ECOTree.SL_NONE = 2;
 ECOTree._getAutoRenderMode = function() {
 	var r = "VML";
 	var is_ie6 = /msie 6\.0/i.test(navigator.userAgent);
+	var is_ie7 = /msie 7\.0/i.test(navigator.userAgent);
+	var is_ie8 = /msie 8\.0/i.test(navigator.userAgent);
 	var is_ff = /Firefox/i.test(navigator.userAgent);	
-	if (is_ff) r = "CANVAS";
+	if (!(is_ie6 || is_ie7 || is_ie8)) r = "CANVAS";
+	//if (is_ff) r = "CANVAS";
 	return r;
 }
 
@@ -704,28 +708,39 @@ ECOTree.prototype._drawTree = function () {
 					this.ctx.restore();
 					
 					//HTML part...
-					s.push('<div id="' + node.id + '" class="econode" style="{top:'+(node.YPosition+this.canvasoffsetTop)+'px; left:'+(node.XPosition+this.canvasoffsetLeft)+'px; width:'+node.w+'px; height:'+node.h+'px;}" ');
+					var tmpTop = (node.YPosition + this.canvasoffsetTop);
+					var tmpLeft = (node.XPosition + this.canvasoffsetLeft);
+					s.push('<div id="'+node.id+'" class="econode" ');
+					s.push('style="{top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+node.w+'px; height:'+node.h+'px;}" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)											
 						s.push('onclick="javascript:ECOTree._canvasNodeClickHandler('+this.obj+',event.target.id,\''+node.id+'\');" ');										
 					s.push('onmouseover="javascript:showInfo(\''+node.id+'\',event)" ');
-					s.push('onmouseout="javascript:hideInfo()" ');
-					s.push('>');
-					s.push('<font face=Verdana size=3>');					
+					s.push('onmouseout="javascript:hideInfo()" >');
+					s.push('<font face=Verdana size=3>');
+					var expandedImgLeft = -20;
+					var expandedImgTop = node.h / 2 - 6;
+					var nodeTextLeft = 5;
+					var tmpWidth = node.w - nodeTextLeft * 2;
+					tmpLeft += nodeTextLeft;
 					if (node.canCollapse) {
-						s.push('<a id="c' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
-						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');							
+						s.push('<a id="c'+node.id+'" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
+						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
+						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" ');
+						s.push('style="position:relative; left:'+expandedImgLeft+'px; top:'+expandedImgTop+'px" >');
 						s.push('</a>');
 					}					
 					if (node.target && this.config.useTarget)
 					{
 						//s.push('<a id="t' + node.id + '" href="'+node.target+'">');
-						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
+						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
 						s.push(node.dsc);
 						s.push('</a>');
 					}				
 					else
 					{
-						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+						s.push('<a id="t' + node.id + '" href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
+						s.push('style="position:absolute; top:'+tmpTop+'px; left:'+tmpLeft+'px; width:'+tmpWidth+'px; height:'+node.h+'px" >');
 						s.push(node.dsc);
 						s.push('</a>');
 					}
