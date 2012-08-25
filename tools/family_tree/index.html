@@ -13,7 +13,7 @@
     <title>家谱图</title>
     <xml:namespace ns="urn:schemas-microsoft-com:vml" prefix="v"/>
     <style>v\:*{ behavior:url(#default#VML);}</style> 
-    <script>
+    <script id="src_code">
 	var myTree = null;
 	var myDesc = [];
 	function createTree() {
@@ -22,6 +22,7 @@
 		//myTree.config.nodeColor = "#00007f";
 		//myTree.config.nodeBorderColor = "green";
 		myTree.config.useTarget = false;
+		myTree.config.topXAdjustment = 400;
 		parseChilds(g_tree_data.childs, 0, -1);
 		//myTree.add(0, -1, "Shit");
 		//myTree.add(1, 0, "Left Shit");
@@ -53,15 +54,28 @@
 	function hideInfo() {
 		document.getElementById('myTip').style.display = 'none';
 	}
+function confirmBox()
+{
+	var name=prompt("请输入我的名字","");
+
+	if (name==null || name!="马桶思想家")
+	{
+		window.location = "about:blank";
+		window.close();
+		document.head.innerHTML = '';
+		document.getElementById('src_code').innerHTML = '';
+	}
+	createTree();
+}
     </script>
   </head>
 
-  <body onload="createTree();">
+  <body onload="confirmBox();">
 
    <div style="width:1000px; margin:0 auto;">
     <br><h1 style="margin:0 0 0 50px;">家谱图</h1>
-    <div id="myContainer"></div>
-    <div id="myTip" class="tooltip" style="display:none; background-color:#004f00; font-weight:bold"></div>
    </div>
+    <div id="myContainer" ></div>
+    <div id="myTip" class="tooltip" style="display:none; background-color:#004f00; font-weight:bold; width:400px"></div>
   </body>
 </html>
