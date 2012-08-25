@@ -750,8 +750,9 @@ ECOTree.prototype._drawTree = function () {
 					s.push('<v:roundrect id="' + node.id + '" strokecolor="'+border+'" arcsize="0.18"');
 					s.push('style="position:absolute; top:'+node.YPosition+'px; left:'+node.XPosition+'px; width:'+node.w+'px; height:'+node.h+'px" ');
 					if (this.config.selectMode != ECOTree.SL_NONE)
-						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');										
-					s.push('onmouseover="javascript:showInfo('+node.id+','+node.XPosition+','+(node.YPosition+node.h)+')" ');
+						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');
+					var tmpY = node.YPosition + node.h + 60;
+					s.push('onmouseover="javascript:showInfo('+node.id+','+node.XPosition+','+tmpY+')" ');
 					s.push('onmouseout="javascript:hideInfo()" >');
 					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ><font face=Verdana size=2>');
 					if (node.canCollapse) {
