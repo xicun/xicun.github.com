@@ -753,12 +753,12 @@ ECOTree.prototype._drawTree = function () {
 						s.push('href="javascript:'+this.obj+'.selectNode(\''+node.id+'\', true);" ');										
 					s.push('onmouseover="javascript:showInfo('+node.id+','+node.XPosition+','+(node.YPosition+node.h)+')" ');
 					s.push('onmouseout="javascript:hideInfo()" >');
-					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ><font face=Verdana size=3>');
+					s.push('<v:textbox inset="0.5px,0.5px,0.5px,0.5px" ><font face=Verdana size=2>');
 					if (node.canCollapse) {
 						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
 						s.push('<img border=0 src="'+((node.isCollapsed) ? this.config.collapsedImage : this.config.expandedImage)+'" >');
 						s.push('</a>');
-						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" >');
+						s.push('<a href="javascript:'+this.obj+'.collapseNode(\''+node.id+'\',true);" ');
 					} else {
 s.push('<a ');
 }
