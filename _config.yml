@@ -1,0 +1,8 @@
+title: xicun.github.com
+description: Github main page of xicun
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-hacker
+
+gems:
+  - jekyll-mentions
